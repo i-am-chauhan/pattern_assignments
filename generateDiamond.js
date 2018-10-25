@@ -1,15 +1,12 @@
-const { createDiamond }=require('./src/patternLib.js');
+const { createDiamond } = require('./src/patternLib.js');
 
-const main=function(){
-  let pattern={};
-  let type=process.argv[2];
-  let height=+process.argv[3];
-  if(height%2==0){
-    height=height-1;
+const main = function() {
+  let type = process.argv[2];
+  let height = +process.argv[3];
+  if(height%2 == 0) {
+    height--;
   }
-  pattern["filled"]=createDiamond("filled",height);
-  pattern["hollow"]=createDiamond("hollow",height);
-  pattern["angled"]=createDiamond("angled",height);
-  console.log(pattern[type]);
+  let pattern = createDiamond(type,height);
+  console.log(pattern);
 }
 main();

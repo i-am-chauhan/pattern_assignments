@@ -1,11 +1,9 @@
 const { createTriangle } = require('./src/patternLib.js');
 
-const main=function(){
-  let pattern={};
-  let type=process.argv[2];
-  let height=+process.argv[3];
-  pattern["left"]=createTriangle("left",height);
-  pattern["right"]=createTriangle("right",height);
-  console.log(pattern[type]);
+const main = function() {
+  let type = process.argv[2];
+  let height = +process.argv[3];
+  let pattern = createTriangle(type,height);
+  console.log(pattern);
 }
 main();
