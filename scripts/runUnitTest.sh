@@ -1,4 +1,5 @@
 #! /bin/bash
 
-./run_all_test.sh
+./scripts/runApptest.sh
+node ./test/patternUtilTest.js
 node ./test/patternLibTest.js
