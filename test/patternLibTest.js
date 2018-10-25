@@ -1,5 +1,5 @@
 const assert=require('assert');
-const { createRectangle, createTriangle, createDiamond } = require('../src/pattern_lib.js');
+const { createRectangle, createTriangle, createDiamond } = require('../src/patternLib.js');
 
 
 const repeat=function(symbol,times){

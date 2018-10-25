@@ -1,4 +1,4 @@
-const { createTriangle } = require('./src/pattern_lib.js');
+const { createTriangle } = require('./src/patternLib.js');
 
 const main=function(){
   let pattern={};

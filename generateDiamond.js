@@ -1,4 +1,4 @@
-const { createDiamond }=require('./src/pattern_lib.js');
+const { createDiamond }=require('./src/patternLib.js');
 
 const main=function(){
   let pattern={};
