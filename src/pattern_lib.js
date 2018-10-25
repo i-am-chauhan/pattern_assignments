@@ -1,22 +1,8 @@
-const generateLine=function(length,symbol){
-  let line="";
-  for(let index=0; index<length; index++){
-    line+=symbol;
-  }
-  return line;
-}
-
-const createRow=function(length,symbol,frontSpaces){
-  return generateLine(frontSpaces," ")+generateLine(length,symbol)
-}
-
-const index=function(arg){
-  return 1%(arg+1);
-}
-
-const botindex=function(arg){
-  return 1%arg;
-}
+const {
+  generateLine,
+  createRow,
+  leftBorderWidth,
+  rightBorderWidth}=require('./patternUtil.js');
 
 const filledRectangle=function(column,row,symbol){
   let line="";
@@ -29,20 +15,20 @@ const filledRectangle=function(column,row,symbol){
 }
 
 const hollowRectangle=function(column,row,symbol){
-  let line=filledRectangle(column,index(row),symbol);
+  let line=filledRectangle(column,leftBorderWidth(row),symbol);
   let delimeter="\n";
-  for(let loopIndex=0; loopIndex<row-2; loopIndex++){
-    line+=delimeter+generateLine(index(column),symbol);
-    line+=generateLine(column-2," ")+generateLine(botindex(column),symbol);
+  for(let index=0; index<row-2; index++){
+    line+=delimeter+generateLine(leftBorderWidth(column),symbol);
+    line+=generateLine(column-2," ")+generateLine(rightBorderWidth(column),symbol);
   }
-  return line+delimeter+filledRectangle(column,botindex(row),symbol);
+  return line+delimeter+filledRectangle(column,rightBorderWidth(row),symbol);
 }
 
 const alternatingRectangle=function(column,row,symbol1,symbol2){
-  let line=filledRectangle(column,index(row),symbol1);
+  let line=filledRectangle(column,leftBorderWidth(row),symbol1);
   let delimeter="\n";
-  for(let loopIndex=0; loopIndex<row-1; loopIndex++){
-    if(loopIndex%2==0){
+  for(let index=0; index<row-1; index++){
+    if(index%2==0){
       line+=delimeter+generateLine(column,symbol2);
     }else{
       line+=delimeter+generateLine(column,symbol1);
@@ -63,8 +49,8 @@ const leftAlignTriangle=function(maxColumns){
   let line="";
   let element="";
   let delimiter="";
-  for(let loopIndex=1; loopIndex<=maxColumns; loopIndex++){
-    element=generateLine(loopIndex,"*");
+  for(let index=1; index<=maxColumns; index++){
+    element=generateLine(index,"*");
     line=line+delimiter+element;
     delimiter="\n";
   }
@@ -76,9 +62,9 @@ const rightAlignTriangle=function(maxColumns){
   let element="";
   let delimiter="";
   let numOfspaces=0;
-  for(let loopIndex=1; loopIndex<=maxColumns; loopIndex++){
-    numOfspaces=maxColumns-loopIndex;
-    element=generateLine(numOfspaces," ")+generateLine(loopIndex,"*");
+  for(let index=1; index<=maxColumns; index++){
+    numOfspaces=maxColumns-index;
+    element=generateLine(numOfspaces," ")+generateLine(index,"*");
     line=line+delimiter+element;
     delimiter="\n";
   }
@@ -99,15 +85,15 @@ const diamondRow=function(length,column,symbol1,symbol2,symbol3){
 }
 
 const generateDiamond=function(length,symbol1,symbol2,symbol3){
-  let line=createRow(index(length),"*",Math.floor(length/2));
+  let line=createRow(leftBorderWidth(length),"*",Math.floor(length/2));
   let delimeter="\n";
-  let botDiamond=createRow(botindex(length),"*",Math.floor(length/2));
-  for(let index=3; index<=length-2; index+=2){
-    line+=delimeter+diamondRow(length,index,symbol1,symbol2,symbol3);
-    botDiamond=diamondRow(length,index,symbol3,symbol2,symbol1)+delimeter+botDiamond;
+  let botDiamond=createRow(rightBorderWidth(length),"*",Math.floor(length/2));
+  for(let leftBorderWidth=3; leftBorderWidth<=length-2; leftBorderWidth+=2){
+    line+=delimeter+diamondRow(length,leftBorderWidth,symbol1,symbol2,symbol3);
+    botDiamond=diamondRow(length,leftBorderWidth,symbol3,symbol2,symbol1)+delimeter+botDiamond;
   }
-  line+=delimeter+generateLine(botindex(length),"*");
-  line+=generateLine(length-2,symbol2)+generateLine(botindex(length),"*");
+  line+=delimeter+generateLine(rightBorderWidth(length),"*");
+  line+=generateLine(length-2,symbol2)+generateLine(rightBorderWidth(length),"*");
   line+=delimeter+botDiamond;
   return line;
 }
