@@ -1,9 +1,5 @@
-const repeatCharacter=function(length,symbol){
-  let line="";
-  for(let index=0; index<length; index++){
-    line+=symbol;
-  }
-  return line;
+const repeatCharacter=function(times, symbol){
+  return new Array(times).fill(symbol).join('');
 }
 
 const createRow=function(length,symbol,frontSpaces){

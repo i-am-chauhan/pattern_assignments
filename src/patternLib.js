@@ -5,13 +5,8 @@ const {
   rightBorderWidth}=require('./patternUtil.js');
 
 const filledRectangle=function(column,row,symbol){
-  let line="";
-  let delimeter="";
-  for(let index=0; index<row; index++){
-    line+=delimeter+repeatCharacter(column,symbol);
-    delimeter="\n";
-  }
-  return line;
+  let line = repeatCharacter(column, symbol);
+  return new Array(row).fill(line).join('\n');
 }
 
 const hollowRectangle=function(column,row,symbol){
@@ -108,8 +103,8 @@ const createDiamond=function(type,height) {
 
 const extractUserArgs = function(args) {
   let value = args[2];
-  let columns = args[3];
-  let rows = args[args.length-1];
+  let columns = +args[3];
+  let rows = +args[args.length-1];
   return { type : value, columns : columns, rows : rows };
 }
 
