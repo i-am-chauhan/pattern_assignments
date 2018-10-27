@@ -1,4 +1,4 @@
-const generateLine=function(length,symbol){
+const repeatCharacter=function(length,symbol){
   let line="";
   for(let index=0; index<length; index++){
     line+=symbol;
@@ -7,7 +7,7 @@ const generateLine=function(length,symbol){
 }
 
 const createRow=function(length,symbol,frontSpaces){
-  return generateLine(frontSpaces," ")+generateLine(length,symbol)
+  return repeatCharacter(frontSpaces," ")+repeatCharacter(length,symbol)
 }
 
 const leftBorderWidth=function(arg){
@@ -17,7 +17,7 @@ const leftBorderWidth=function(arg){
 const rightBorderWidth=function(arg){
   return 1%arg;
 }
-exports.generateLine=generateLine;
+exports.repeatCharacter=repeatCharacter;
 exports.createRow=createRow;
 exports.leftBorderWidth=leftBorderWidth;
 exports.rightBorderWidth=rightBorderWidth;

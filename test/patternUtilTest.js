@@ -1,14 +1,14 @@
 const assert = require('assert');
-const { generateLine, createRow } = require('../src/patternUtil.js');
+const { repeatCharacter, createRow } = require('../src/patternUtil.js');
 const { leftBorderWidth, rightBorderWidth } = require('../src/patternUtil.js');
 
-//=============(test for generateLine)==============\\
+//=============(test for repeatCharacter)==============\\
 
-assert.deepEqual(generateLine(0,"*"),"");
-assert.deepEqual(generateLine(5,"*"),"*****");
-assert.deepEqual(generateLine(3,"-"),"---");
-assert.deepEqual(generateLine(4,"$"),"$$$$");
-console.log('all generateLine function test passed');
+assert.deepEqual(repeatCharacter(0,"*"),"");
+assert.deepEqual(repeatCharacter(5,"*"),"*****");
+assert.deepEqual(repeatCharacter(3,"-"),"---");
+assert.deepEqual(repeatCharacter(4,"$"),"$$$$");
+console.log('all repeatCharacter function test passed');
 //=============(test for createRow)=================\\
 
 assert.deepEqual(createRow(3,"*",0),"***");

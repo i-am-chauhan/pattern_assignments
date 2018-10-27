@@ -1,6 +1,6 @@
 const assert=require('assert');
 const { createRectangle, createTriangle, createDiamond } = require('../src/patternLib.js');
-
+const { extractUserArgs } = require('../src/patternLib.js');
 
 const repeat=function(symbol,times){
   return new Array(times).fill(symbol).join("");
@@ -163,3 +163,14 @@ assert.deepEqual(createDiamond("angled",7),angled_diamond_7);
 console.log('2nd test passed');
 console.log('all angled diamond test passed');
 console.log("**************(Hurraaaaah! all diamond test passed)****************")
+
+//=================================(extractUserArgs test)=============================================\\
+
+let _1_result = extractUserArgs([0,,"filled",3,4]);
+assert.deepEqual(_1_result,{ type:"filled",columns:3,rows:4});
+let _2_result = extractUserArgs([0,,"hollow",3,4]);
+assert.deepEqual(_2_result,{ type:"hollow",columns:3,rows:4});
+let _3_result = extractUserArgs([0,,"left",5]);
+assert.deepEqual(_3_result,{ type:"left",columns:5,rows:5});
+console.log("**************(Hurraaaaah! all extractUserArgs test passed)****************")
+
