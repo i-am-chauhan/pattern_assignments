@@ -5,8 +5,13 @@ const {
   rightBorderWidth}=require('./patternUtil.js');
 
 const filledRectangle=function(column,row,symbol){
-  let line = repeatCharacter(column, symbol);
-  return new Array(row).fill(line).join('\n');
+  let line="";
+  let delimeter="";
+  for(let index=0; index<row; index++){
+    line+=delimeter+repeatCharacter(column,symbol);
+    delimeter="\n";
+  }
+  return line;
 }
 
 const hollowRectangle=function(column,row,symbol){
@@ -32,12 +37,15 @@ const alternatingRectangle=function(column,row,symbol1,symbol2){
   return line;
 }
 
-const createRectangle=function(type,column,row){
-  let pattern={};
-  pattern["filled"]=filledRectangle(column,row,"*");
-  pattern["hollow"]=hollowRectangle(column,row,"*");
-  pattern["alternating"]=alternatingRectangle(column,row,"*","-");
-  return pattern[type];
+const createRectangle=function(userArgs){
+  let type = userArgs.type;
+  let column = userArgs.columns;
+  let row = userArgs.rows;
+  let pattern = {};
+  pattern["filled"] = filledRectangle;
+  pattern["hollow"] = hollowRectangle;
+  pattern["alternating"] = alternatingRectangle;
+  return pattern[type](column, row,"*","-");
 }
 
 const leftAlignTriangle=function(maxColumns){
@@ -66,11 +74,13 @@ const rightAlignTriangle=function(maxColumns){
   return line;
 }
 
-const createTriangle=function(type,height) {
-  let pattern={};
-  pattern["left"]=leftAlignTriangle(height);
-  pattern["right"]=rightAlignTriangle(height);
-  return pattern[type];
+const createTriangle=function(userArgs) {
+  let type = userArgs.type;
+  let height = userArgs.columns;
+  let pattern = {};
+  pattern["left"] = leftAlignTriangle;
+  pattern["right"] = rightAlignTriangle;
+  return pattern[type](height);
 }
 
 const diamondRow=function(length,column,symbol1,symbol2,symbol3){
@@ -93,12 +103,19 @@ const generateDiamond=function(length,symbol1,symbol2,symbol3){
   return line;
 }
 
-const createDiamond=function(type,height) {
-  let pattern={};
-  pattern["filled"]=generateDiamond(height,"*","*","*");
-  pattern["hollow"]=generateDiamond(height,"*"," ","*");
-  pattern["angled"]=generateDiamond(height,"/"," ","\\");
-  return pattern[type];
+const createDiamond=function(userArgs) {
+  let type = userArgs.type;
+  let height = userArgs.columns;
+  if(height%2 == 0) {
+    height--;
+  }
+  if(type == "filled"){
+    return generateDiamond(height,"*","*","*");
+  }
+  if(type == "hollow"){
+    return generateDiamond(height,"*"," ","*");
+  }
+  return generateDiamond(height,"/"," ","\\");
 }
 
 const extractUserArgs = function(args) {
