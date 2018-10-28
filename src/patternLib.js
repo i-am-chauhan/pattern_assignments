@@ -4,37 +4,38 @@ const {
   leftBorderWidth,
   rightBorderWidth}=require('./patternUtil.js');
 
-const filledRectangle=function(column,row,symbol){
-  let line="";
-  let delimeter="";
-  for(let index=0; index<row; index++){
-    line+=delimeter+repeatCharacter(column,symbol);
-    delimeter="\n";
-  }
-  return line;
+const createFilledLine = function(width, symbol) {
+  return repeatCharacter(width, symbol);
 }
 
-const hollowRectangle=function(column,row,symbol){
-  let line=filledRectangle(column,leftBorderWidth(row),symbol);
-  let delimeter="\n";
-  for(let index=0; index<row-2; index++){
-    line+=delimeter+repeatCharacter(leftBorderWidth(column),symbol);
-    line+=repeatCharacter(column-2," ")+repeatCharacter(rightBorderWidth(column),symbol);
-  }
-  return line+delimeter+filledRectangle(column,rightBorderWidth(row),symbol);
+const createHollowLine = function(width, symbol) {
+  let line = repeatCharacter(leftBorderWidth(width), symbol);
+  line += repeatCharacter(width -2, " ");
+  return line + repeatCharacter(rightBorderWidth(width), symbol);
 }
 
-const alternatingRectangle=function(column,row,symbol1,symbol2){
-  let line=filledRectangle(column,leftBorderWidth(row),symbol1);
-  let delimeter="\n";
-  for(let index=0; index<row-1; index++){
-    if(index%2==0){
-      line+=delimeter+repeatCharacter(column,symbol2);
-    }else{
-      line+=delimeter+repeatCharacter(column,symbol1);
-    }
+const filledRectangle=function(column, row, symbol) {
+  let line = createFilledLine(column, symbol);
+  return new Array(row).fill(line);
+}
+
+const hollowRectangle=function(column, row, symbol) {
+  let edgeLine = createFilledLine(column, symbol);
+  let middleLine = createHollowLine(column, symbol);
+  let rectangle = new Array(row).fill(middleLine);
+  rectangle[0] = edgeLine;
+  rectangle[ row -1 ] = edgeLine;
+  return rectangle;
+}
+
+const alternatingRectangle=function(column,row,symbol1,symbol2) {
+  let line = [ createFilledLine(column, symbol1) ];
+  line[1] = [createFilledLine(column, symbol2) ];
+  let rectangle = [];
+  for(let index=0; index<row; index++) {
+    rectangle.push(line[ index%2 ]);
   }
-  return line;
+  return rectangle;
 }
 
 const createRectangle=function(userArgs){
@@ -45,7 +46,7 @@ const createRectangle=function(userArgs){
   pattern["filled"] = filledRectangle;
   pattern["hollow"] = hollowRectangle;
   pattern["alternating"] = alternatingRectangle;
-  return pattern[type](column, row,"*","-");
+  return pattern[type](column, row,"*","-").join("\n");
 }
 
 const leftAlignTriangle=function(maxColumns){

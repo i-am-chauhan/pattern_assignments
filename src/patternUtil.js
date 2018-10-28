@@ -1,5 +1,9 @@
 const repeatCharacter=function(times, symbol){
-  return new Array(times).fill(symbol).join('');
+  let line = "";
+  for(let index=0; index<times; index++){
+    line += symbol;
+  }
+  return line;
 }
 
 const createRow=function(length,symbol,frontSpaces){
@@ -11,7 +15,7 @@ const leftBorderWidth=function(arg){
 }
 
 const rightBorderWidth=function(arg){
-  return 1%arg;
+  return 1%arg || 0;
 }
 exports.repeatCharacter=repeatCharacter;
 exports.createRow=createRow;
