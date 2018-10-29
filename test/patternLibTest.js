@@ -74,21 +74,32 @@ console.log("**************(Hurraaaaah! all rectangle test passed)**************
 //=================================(triangle test)=============================================\\
 
 //this is test left align triangles
-let leftTriangle_5 = "*" +"\n";
-   leftTriangle_5 += "**" +"\n";
-   leftTriangle_5 += "***" +"\n";
-   leftTriangle_5 += "****" +"\n";
+let leftTriangle_5 = "*    " +"\n";
+   leftTriangle_5 += "**   " +"\n";
+   leftTriangle_5 += "***  " +"\n";
+   leftTriangle_5 += "**** " +"\n";
    leftTriangle_5 += "*****";
 
 assert.deepEqual(createTriangle({ type:"left", columns:5}),leftTriangle_5);
 console.log('1st test passed');
 
-let leftTriangle_6 = leftTriangle_5 + "\n" + "******"
+let leftTriangle_6 = "*     " +"\n";
+   leftTriangle_6 += "**    " +"\n";
+   leftTriangle_6 += "***   " +"\n";
+   leftTriangle_6 += "****  " +"\n";
+   leftTriangle_6 += "***** " +"\n";
+   leftTriangle_6 += "******";
 
 assert.deepEqual(createTriangle({ type:"left", columns:6}),leftTriangle_6);
 console.log('2nd test passed');
 
-let leftTriangle_7 = leftTriangle_6+ "\n" + "*******"
+let leftTriangle_7 = "*      " +"\n";
+   leftTriangle_7 += "**     " +"\n";
+   leftTriangle_7 += "***    " +"\n";
+   leftTriangle_7 += "****   " +"\n";
+   leftTriangle_7 += "*****  " +"\n";
+   leftTriangle_7 += "****** " +"\n";
+   leftTriangle_7 += "*******"
 
 assert.deepEqual(createTriangle({ type:"left", columns:7}),leftTriangle_7);
 

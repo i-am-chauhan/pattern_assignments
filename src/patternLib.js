@@ -1,11 +1,15 @@
-const {
-  repeatCharacter,
-  createRow,
-  leftBorderWidth,
-  rightBorderWidth}=require('./patternUtil.js');
+const lib = require('./patternUtil.js');
+const { repeatCharacter } = lib;
+const { createRow } = lib;
+const { leftBorderWidth } = lib;
+const { rightBorderWidth } = lib;
+const { createFilledLine } = lib;
+const { createIncNumSeries } = lib;
+const { justifyLine } = lib;
+const { revString } = lib;
 
-const createFilledLine = function(width, symbol) {
-  return repeatCharacter(width, symbol);
+const starLineGenerator = function(width) {
+  return repeatCharacter(width, "*");
 }
 
 const createHollowLine = function(width, symbol) {
@@ -49,30 +53,19 @@ const createRectangle=function(userArgs){
   return pattern[type](column, row,"*","-").join("\n");
 }
 
-const leftAlignTriangle=function(maxColumns){
-  let line="";
-  let element="";
-  let delimiter="";
-  for(let index=1; index<=maxColumns; index++){
-    element=repeatCharacter(index,"*");
-    line=line+delimiter+element;
-    delimiter="\n";
-  }
-  return line;
+const triangleGenerator=function(height) {
+  let triangleWidth = createIncNumSeries(height);
+  return triangleWidth.map(starLineGenerator);
 }
 
-const rightAlignTriangle=function(maxColumns){
-  let line="";
-  let element="";
-  let delimiter="";
-  let numOfspaces=0;
-  for(let index=1; index<=maxColumns; index++){
-    numOfspaces=maxColumns-index;
-    element=repeatCharacter(numOfspaces," ")+repeatCharacter(index,"*");
-    line=line+delimiter+element;
-    delimiter="\n";
-  }
-  return line;
+const rightAlignTriangle=function(height) {
+  let triangle = triangleGenerator(height);
+  return triangle.map(justifyLine(height));
+}
+
+const leftAlignTriangle = function(height) {
+  let triangle = rightAlignTriangle(height);
+  return triangle.map(revString);
 }
 
 const createTriangle=function(userArgs) {
@@ -81,7 +74,7 @@ const createTriangle=function(userArgs) {
   let pattern = {};
   pattern["left"] = leftAlignTriangle;
   pattern["right"] = rightAlignTriangle;
-  return pattern[type](height);
+  return pattern[type](height).join('\n');
 }
 
 const diamondRow=function(length,column,symbol1,symbol2,symbol3){
