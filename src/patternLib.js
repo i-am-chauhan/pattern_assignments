@@ -8,14 +8,22 @@ const { createIncNumSeries } = lib;
 const { justifyLine } = lib;
 const { revString } = lib;
 
-const starLineGenerator = function(width) {
-  return repeatCharacter(width, "*");
+const filledLineGenerator = function(symbol) { 
+  return function(width) {
+    return repeatCharacter(width, symbol);
+  }
 }
 
 const createHollowLine = function(width, symbol) {
   let line = repeatCharacter(leftBorderWidth(width), symbol);
   line += repeatCharacter(width -2, " ");
   return line + repeatCharacter(rightBorderWidth(width), symbol);
+}
+
+const hollowLineGenerator = function(symbol) {
+  return function(width) {
+    return createHollowLine(width, symbol);
+  }
 }
 
 const filledRectangle=function(column, row, symbol) {
@@ -53,18 +61,18 @@ const createRectangle=function(userArgs){
   return pattern[type](column, row,"*","-").join("\n");
 }
 
-const triangleGenerator=function(height) {
+const triangleGenerator=function(height, symbol) {
   let triangleWidth = createIncNumSeries(height);
-  return triangleWidth.map(starLineGenerator);
+  return triangleWidth.map(filledLineGenerator(symbol));
 }
 
-const rightAlignTriangle=function(height) {
-  let triangle = triangleGenerator(height);
+const rightAlignTriangle=function(height, symbol) {
+  let triangle = triangleGenerator(height, symbol);
   return triangle.map(justifyLine(height));
 }
 
-const leftAlignTriangle = function(height) {
-  let triangle = rightAlignTriangle(height);
+const leftAlignTriangle = function(height, symbol) {
+  let triangle = rightAlignTriangle(height, symbol);
   return triangle.map(revString);
 }
 
@@ -74,42 +82,83 @@ const createTriangle=function(userArgs) {
   let pattern = {};
   pattern["left"] = leftAlignTriangle;
   pattern["right"] = rightAlignTriangle;
-  return pattern[type](height).join('\n');
+  return pattern[type](height, "*").join('\n');
 }
 
-const diamondRow=function(length,column,symbol1,symbol2,symbol3){
-  let line=repeatCharacter(Math.floor(length/2)-Math.floor(column/2)," ");
-  line+=symbol1+repeatCharacter(column-2,symbol2)+symbol3;
-  return line;
-}
-
-const generateDiamond=function(length,symbol1,symbol2,symbol3){
-  let line=createRow(leftBorderWidth(length),"*",Math.floor(length/2));
-  let delimeter="\n";
-  let botDiamond=createRow(rightBorderWidth(length),"*",Math.floor(length/2));
-  for(let leftBorderWidth=3; leftBorderWidth<=length-2; leftBorderWidth+=2){
-    line+=delimeter+diamondRow(length,leftBorderWidth,symbol1,symbol2,symbol3);
-    botDiamond=diamondRow(length,leftBorderWidth,symbol3,symbol2,symbol1)+delimeter+botDiamond;
+const justifyLineBothEnds = function(height) {
+  return function(line) {
+    let numOfSpaces = (height-line.length)/2;
+    let result = repeatCharacter(numOfSpaces," ")+line;
+    return result + repeatCharacter(numOfSpaces, " ");
   }
-  line+=delimeter+repeatCharacter(rightBorderWidth(length),"*");
-  line+=repeatCharacter(length-2,symbol2)+repeatCharacter(rightBorderWidth(length),"*");
-  line+=delimeter+botDiamond;
+}
+
+const diamondRowWidth = function(maxWidth) {
+  let width = [];
+  for(let index=1; index<= maxWidth; index+=2) {
+    width.push(index);
+  }
+  let result = width.slice().reverse()
+  return width.concat(result.slice(1,));
+}
+
+const diamondLine = function(lineGenerator, height, symbol) {
+  let line = diamondRowWidth(height);
+  return line.map(lineGenerator(symbol));
+}
+
+const justifyDiamondLine = function(lineGenerator, height, symbol) {
+  let row = diamondLine(lineGenerator, height, symbol);
+  return row.map(justifyLineBothEnds(height));
+}
+
+const generateFilledDiamond =function(height, symbol){
+  return justifyDiamondLine(filledLineGenerator, height, symbol);
+}
+
+const generateHollowDiamond = function(height, symbol){
+  return justifyDiamondLine(hollowLineGenerator, height, symbol);
+}
+
+const createAngledLine = function(width) {
+  let line = repeatCharacter(leftBorderWidth(width), '/');
+  line += repeatCharacter(width-2, " ");
+  line += repeatCharacter(rightBorderWidth(width),'\\');
   return line;
+}
+
+const createAngledDiamondRow = function(height) {
+  let line = "*";
+  let diamond = [line];
+  for(let index=3; index<= height-2; index+=2) {
+    line = createAngledLine(index);
+    diamond.push(line);
+  }
+  return diamond
+}
+
+const generateAngledDiamond = function(height) {
+  let diamond = createAngledDiamondRow(height);
+  let botDiamond = diamond.slice().join('|');
+  diamond.push(createHollowLine(height, "*"));
+  botDiamond = revString(botDiamond).split('|');
+  botDiamond.map(function(line) {
+    return diamond.push(line)
+  });
+  return diamond.map(justifyLineBothEnds(height));
 }
 
 const createDiamond=function(userArgs) {
+  let pattern = {};
   let type = userArgs.type;
   let height = userArgs.columns;
   if(height%2 == 0) {
     height--;
   }
-  if(type == "filled"){
-    return generateDiamond(height,"*","*","*");
-  }
-  if(type == "hollow"){
-    return generateDiamond(height,"*"," ","*");
-  }
-  return generateDiamond(height,"/"," ","\\");
+  pattern["filled"] = generateFilledDiamond;
+  pattern["hollow"] = generateHollowDiamond;
+  pattern["angled"] = generateAngledDiamond;
+  return pattern[type](height, "*").join('\n');
 }
 
 const extractUserArgs = function(args) {

@@ -142,23 +142,23 @@ console.log("**************(Hurraaaaah! all triangle test passed)***************
 //=================================(diamond test)=============================================\\
 
 // this is test for filled diamond
-let filled_diamond_5="  *"+"\n";
- filled_diamond_5 += " ***"+"\n";
+let filled_diamond_5="  *  "+"\n";
+ filled_diamond_5 += " *** "+"\n";
  filled_diamond_5 += "*****"+"\n";
- filled_diamond_5 += " ***"+"\n";
- filled_diamond_5 += "  *";
+ filled_diamond_5 += " *** "+"\n";
+ filled_diamond_5 += "  *  ";
 
 assert.deepEqual(createDiamond({ type:"filled", columns:5}),filled_diamond_5);
 
 console.log('1st test passed');
 
-let filled_diamond_7="   *"+"\n";
- filled_diamond_7 += "  ***"+"\n";
- filled_diamond_7 += " *****"+"\n";
+let filled_diamond_7="   *   "+"\n";
+ filled_diamond_7 += "  ***  "+"\n";
+ filled_diamond_7 += " ***** "+"\n";
  filled_diamond_7 += "*******"+"\n";
- filled_diamond_7 += " *****"+"\n";
- filled_diamond_7 += "  ***"+"\n";
- filled_diamond_7 += "   *";
+ filled_diamond_7 += " ***** "+"\n";
+ filled_diamond_7 += "  ***  "+"\n";
+ filled_diamond_7 += "   *   ";
 
 assert.deepEqual(createDiamond({ type:"filled", columns:7}),filled_diamond_7);
 
@@ -166,23 +166,23 @@ console.log('2nd test passed');
 console.log('all filled diamond test passed');
 
 // this is test for hollow diamond
-let hollow_diamond_5="  *"+"\n";
- hollow_diamond_5 += " * *"+"\n";
+let hollow_diamond_5="  *  "+"\n";
+ hollow_diamond_5 += " * * "+"\n";
  hollow_diamond_5 += "*   *"+"\n";
- hollow_diamond_5 += " * *"+"\n";
- hollow_diamond_5 += "  *";
+ hollow_diamond_5 += " * * "+"\n";
+ hollow_diamond_5 += "  *  ";
 
 assert.deepEqual(createDiamond({ type:"hollow", columns:5}),hollow_diamond_5);
 
 console.log('1st test passed');
 
-let hollow_diamond_7="   *"+"\n";
- hollow_diamond_7 += "  * *"+"\n";
- hollow_diamond_7 += " *   *"+"\n";
+let hollow_diamond_7="   *   "+"\n";
+ hollow_diamond_7 += "  * *  "+"\n";
+ hollow_diamond_7 += " *   * "+"\n";
  hollow_diamond_7 += "*     *"+"\n";
- hollow_diamond_7 += " *   *"+"\n";
- hollow_diamond_7 += "  * *"+"\n";
- hollow_diamond_7 += "   *";
+ hollow_diamond_7 += " *   * "+"\n";
+ hollow_diamond_7 += "  * *  "+"\n";
+ hollow_diamond_7 += "   *   ";
 
 assert.deepEqual(createDiamond({ type:"hollow", columns:7}),hollow_diamond_7);
 
@@ -190,22 +190,22 @@ console.log('2nd test passed');
 console.log('all hollow diamond test passed');
 
 // this is test for angled diamond
-let angled_diamond_5="  *"+"\n";
- angled_diamond_5 += " / \\"+"\n";
+let angled_diamond_5="  *  "+"\n";
+ angled_diamond_5 += " / \\ "+"\n";
  angled_diamond_5 += "*   *"+"\n";
- angled_diamond_5 += " \\ /"+"\n";
- angled_diamond_5 += "  *";
+ angled_diamond_5 += " \\ / "+"\n";
+ angled_diamond_5 += "  *  ";
 
 assert.deepEqual(createDiamond({ type:"angled", columns:5}),angled_diamond_5);
 console.log('1st test passed');
 
-let angled_diamond_7="   *"+"\n";
- angled_diamond_7 += "  / \\"+"\n";
- angled_diamond_7 += " /   \\"+"\n";
+let angled_diamond_7="   *   "+"\n";
+ angled_diamond_7 += "  / \\  "+"\n";
+ angled_diamond_7 += " /   \\ "+"\n";
  angled_diamond_7 += "*     *"+"\n";
- angled_diamond_7 += " \\   /"+"\n";
- angled_diamond_7 += "  \\ /"+"\n";
- angled_diamond_7 += "   *";
+ angled_diamond_7 += " \\   / "+"\n";
+ angled_diamond_7 += "  \\ /  "+"\n";
+ angled_diamond_7 += "   *   ";
 
 assert.deepEqual(createDiamond({ type:"angled", columns:7}),angled_diamond_7);
 
