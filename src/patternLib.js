@@ -189,7 +189,10 @@ const mirror = function(source) {
 
 const merge = function(set,subset) {
   let result = [];
-  for(let index=0; index<set.length; index++) {
+  let length = Math.max(set.length, subset.length);
+  for(let index=0; index<length; index++) {
+    set[index] = set[index] || repeatCharacter(set[index-1].length," ");
+    subset[index] = subset[index] || repeatCharacter(subset[index-1].length," ");
     result[index] = set[index] + " " + subset[index];
   }
   return result;
@@ -218,7 +221,7 @@ const generatePattern = function(userArg) {
     let fnName = userArg["type"+index][0];
     result.push(fnName({ type:type, columns:height,rows:width}));
   }
-   result = mergePattern(result);
+  result = mergePattern(result);
   pattern[""] = join ;
   pattern["flip"] = flip;
   pattern["mirror"] = mirror;
