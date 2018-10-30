@@ -178,11 +178,91 @@ const organizeDiamond = function(userArgs) {
   return createDiamond(userArgs).join('\n');
 }
 
+const flip = function(source) {
+  let result= source.map(revString);
+  return result;
+}
+
+const mirror = function(source) {
+  return source.reverse();
+}
+
+const merge = function(set,subset) {
+  let result = [];
+  for(let index=0; index<set.length; index++) {
+    result[index] = set[index] + " " + subset[index];
+  }
+  return result;
+}
+
+const mergePattern = function(source) {
+  let result = source[0];
+  for (let index=1; index< source.length; index++) {
+    result = merge(result, source[index]);
+  }
+  return result;
+}
+
+const join = function(source){
+  return source;
+}
+
+const generatePattern = function(userArg) {
+  let result = [];
+  let pattern ={};
+  let length = Object.keys(userArg).length;
+  for(let index=1; index<length; index++) {
+    let type = userArg["type"+index][1];
+    let height = userArg["type"+index][2];
+    let width = userArg["type"+index][3];
+    let fnName = userArg["type"+index][0];
+    result.push(fnName({ type:type, columns:height,rows:width}));
+  }
+   result = mergePattern(result);
+  pattern[""] = join ;
+  pattern["flip"] = flip;
+  pattern["mirror"] = mirror;
+  return pattern[userArg.action](result);
+}
+
+const organizePattern = function(userArg) {
+  return generatePattern(userArg).join('\n');
+}
+
 const extractUsrArgs = function(args) {
   let value = args[2];
   let columns = +args[3];
   let rows = +args[args.length-1];
   return { type : value, columns : columns, rows : rows };
+}
+
+const extractMultiUsrArgs = function(userArgs){
+  let args = {action:""};
+  let action = ["flip", "mirror"];
+  let patternIndex = 1;
+  for(let index = 2; index<userArgs.length; index++){
+    if(action.includes(userArgs[index])){
+      args.action = userArgs[index];
+      index++;
+    }
+    let pattern =userArgs[index].split('_');
+    let width = +userArgs[index + 1];
+    if(pattern[1] == "rectangle"){
+      let height = +userArgs[index +2];
+      args["type" + patternIndex] =  [createRectangle,pattern[0],width,height];
+      index +=2;
+      patternIndex++;
+    }
+    if(pattern[1] == "triangle" || pattern[1] == "diamond") {
+      shape = {};
+      shape["triangle"] = createTriangle;
+      shape["diamond"] = createDiamond;
+      args["type" + patternIndex] = [shape[pattern[1]],pattern[0],width];
+      index++;
+      patternIndex++;
+    }
+  }
+  return args;
 }
 
 exports.createDiamond = createDiamond;
@@ -191,4 +271,7 @@ exports.organizeTriangle = organizeTriangle;
 exports.organizeDiamond = organizeDiamond;
 exports.createRectangle = createRectangle;
 exports.createTriangle = createTriangle;
+exports.generatePattern = generatePattern;
 exports.extractUserArgs = extractUsrArgs;
+exports.extractMultiUsrArgs = extractMultiUsrArgs;
+exports.organizePattern = organizePattern;

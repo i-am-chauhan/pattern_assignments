@@ -1,4 +1,5 @@
-const { organizeDiamond, extractUserArgs } = require('./src/patternLib.js');
+const { organizeDiamond } = require('./src/patternLib.js');
+const { extractUserArgs } = require('./src/patternLib.js');
 
 const main = function() {
   let userArgs = extractUserArgs(process.argv);

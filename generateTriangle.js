@@ -1,4 +1,5 @@
-const { organizeTriangle, extractUserArgs } = require('./src/patternLib.js');
+const { organizeTriangle} = require('./src/patternLib.js');
+const { extractUserArgs } = require('./src/patternLib.js');
 
 const main = function() {
   let userargs = extractUserArgs(process.argv);
