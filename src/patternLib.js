@@ -5,12 +5,17 @@ const { leftBorderWidth } = lib;
 const { rightBorderWidth } = lib;
 const { createFilledLine } = lib;
 const { createIncNumSeries } = lib;
-const { justifyLine } = lib;
 const { revString } = lib;
 
 const filledLineGenerator = function(symbol) { 
   return function(width) {
     return repeatCharacter(width, symbol);
+  }
+}
+
+const justifyLine = function(height) {
+  return function(line) {
+    return repeatCharacter(height-line.length," ")+line;
   }
 }
 
@@ -58,7 +63,7 @@ const createRectangle=function(userArgs){
   pattern["filled"] = filledRectangle;
   pattern["hollow"] = hollowRectangle;
   pattern["alternating"] = alternatingRectangle;
-  return pattern[type](column, row,"*","-").join("\n");
+  return pattern[type](column, row,"*","-").join('\n');
 }
 
 const triangleGenerator=function(height, symbol) {
@@ -161,7 +166,7 @@ const createDiamond=function(userArgs) {
   return pattern[type](height, "*").join('\n');
 }
 
-const extractUserArgs = function(args) {
+const extractUsrArgs = function(args) {
   let value = args[2];
   let columns = +args[3];
   let rows = +args[args.length-1];
@@ -171,4 +176,4 @@ const extractUserArgs = function(args) {
 exports.createDiamond = createDiamond;
 exports.createRectangle = createRectangle;
 exports.createTriangle = createTriangle;
-exports.extractUserArgs = extractUserArgs;
+exports.extractUserArgs = extractUsrArgs;

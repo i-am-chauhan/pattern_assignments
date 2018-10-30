@@ -33,12 +33,6 @@ const createFilledLine = function(width, symbol) {
   return repeatCharacter(width, symbol);
 }
 
-const justifyLine = function(height) {
-  return function(line) {
-    return repeatCharacter(height-line.length," ")+line;
-  }
-}
-
 const revString = function(string) {
   let result = string.split('').reverse();
   return result.join('').toString();
@@ -50,5 +44,4 @@ exports.leftBorderWidth = leftBorderWidth;
 exports.rightBorderWidth = rightBorderWidth;
 exports.createIncNumSeries = createIncNumSeries;
 exports.createFilledLine = createFilledLine;
-exports.justifyLine = justifyLine;
 exports.revString = revString;
