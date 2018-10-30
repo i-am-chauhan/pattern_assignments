@@ -47,7 +47,7 @@ const hollowRectangle=function(column, row, symbol) {
 
 const alternatingRectangle=function(column,row,symbol1,symbol2) {
   let line = [ createFilledLine(column, symbol1) ];
-  line[1] = [createFilledLine(column, symbol2) ];
+  line[1] = createFilledLine(column, symbol2) ;
   let rectangle = [];
   for(let index=0; index<row; index++) {
     rectangle.push(line[ index%2 ]);
@@ -63,7 +63,11 @@ const createRectangle=function(userArgs){
   pattern["filled"] = filledRectangle;
   pattern["hollow"] = hollowRectangle;
   pattern["alternating"] = alternatingRectangle;
-  return pattern[type](column, row,"*","-").join('\n');
+  return pattern[type](column, row,"*","-");
+}
+
+const organizeRectangle = function(userArgs) {
+  return createRectangle(userArgs).join('\n');
 }
 
 const triangleGenerator=function(height, symbol) {
@@ -87,7 +91,11 @@ const createTriangle=function(userArgs) {
   let pattern = {};
   pattern["left"] = leftAlignTriangle;
   pattern["right"] = rightAlignTriangle;
-  return pattern[type](height, "*").join('\n');
+  return pattern[type](height, "*");
+}
+
+const organizeTriangle = function(userArgs) {
+  return createTriangle(userArgs).join('\n');
 }
 
 const justifyLineBothEnds = function(height) {
@@ -163,7 +171,11 @@ const createDiamond=function(userArgs) {
   pattern["filled"] = generateFilledDiamond;
   pattern["hollow"] = generateHollowDiamond;
   pattern["angled"] = generateAngledDiamond;
-  return pattern[type](height, "*").join('\n');
+  return pattern[type](height, "*");
+}
+
+const organizeDiamond = function(userArgs) {
+  return createDiamond(userArgs).join('\n');
 }
 
 const extractUsrArgs = function(args) {
@@ -174,6 +186,9 @@ const extractUsrArgs = function(args) {
 }
 
 exports.createDiamond = createDiamond;
+exports.organizeRectangle = organizeRectangle;
+exports.organizeTriangle = organizeTriangle;
+exports.organizeDiamond = organizeDiamond;
 exports.createRectangle = createRectangle;
 exports.createTriangle = createTriangle;
 exports.extractUserArgs = extractUsrArgs;
