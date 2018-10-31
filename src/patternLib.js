@@ -215,11 +215,9 @@ const generatePattern = function(userArg) {
   let pattern ={};
   let length = Object.keys(userArg).length;
   for(let index=1; index<length; index++) {
-    let type = userArg["type"+index][1];
-    let height = userArg["type"+index][2];
-    let width = userArg["type"+index][3];
+    let patternArgs = userArg["type"+index][1];
     let fnName = userArg["type"+index][0];
-    result.push(fnName({ type:type, columns:height,rows:width}));
+    result.push(fnName(patternArgs));
   }
   result = mergePattern(result);
   pattern[""] = join ;
@@ -239,31 +237,33 @@ const extractUsrArgs = function(args) {
   return { type : value, columns : columns, rows : rows };
 }
 
+const extractPatternsArgs = function(parameters, args, patternIndex) {
+  let pattern = {};
+  pattern["rectangle"] = createRectangle;
+  pattern["triangle"]  = createTriangle;
+  pattern["diamond"]   = createDiamond;
+  let patternType = parameters[0].split("_");
+  let patternArg = { type: patternType[0] };
+  patternArg.columns = +parameters[1];
+  patternArg.rows = +parameters[2] || 0;
+  args["type" + patternIndex] = [pattern[patternType[1]], patternArg];
+  return [patternType[1], args];
+}
+
 const extractMultiUsrArgs = function(userArgs){
-  let args = {action:""};
-  let action = ["flip", "mirror"];
   let patternIndex = 1;
-  for(let index = 2; index<userArgs.length; index++){
-    if(action.includes(userArgs[index])){
+  let args = { action: "" };
+  let patternInc = { "rectangle": 2 };
+  for(let index=2; index<userArgs.length; index++) {
+    if( ["flip", "mirror"].includes(userArgs[index])) {
       args.action = userArgs[index];
       index++;
     }
-    let pattern =userArgs[index].split('_');
-    let width = +userArgs[index + 1];
-    if(pattern[1] == "rectangle"){
-      let height = +userArgs[index +2];
-      args["type" + patternIndex] =  [createRectangle,pattern[0],width,height];
-      index +=2;
-      patternIndex++;
-    }
-    if(pattern[1] == "triangle" || pattern[1] == "diamond") {
-      shape = {};
-      shape["triangle"] = createTriangle;
-      shape["diamond"] = createDiamond;
-      args["type" + patternIndex] = [shape[pattern[1]],pattern[0],width];
-      index++;
-      patternIndex++;
-    }
+    let parmeters = [ userArgs[index], userArgs[index+1], userArgs[index+2] ];
+    let result = extractPatternsArgs(parmeters, args, patternIndex);
+    index += patternInc[result[0]] || 1;
+    args = result[1];
+    patternIndex++;
   }
   return args;
 }

@@ -236,8 +236,8 @@ console.log("**************(Hurraaaaah! all extractUserArgs test passed)********
 
 //=========================(multiPattern test)==========================\\
 
-let shape1 =[createRectangle,"filled", 5,5];
-let shape2 =[createTriangle, "left", 5];
+let shape1 =[createRectangle,{ type:"filled", columns:5, rows:5}];
+let shape2 =[createTriangle,{ type:"left", columns:5 }];
 let first_input = { action:"", type1:shape1, type2: shape2 }
 let _5_rect_triangle = [];
 _5_rect_triangle[0] ="***** *    ";
@@ -250,8 +250,8 @@ assert.deepEqual(generatePattern(first_input), _5_rect_triangle);
 console.log("1st generatePattern test passed");
 
 
-let shape3 =[createTriangle,"left", 5];
-let shape4 =[createTriangle, "left", 5];
+let shape3 =[createTriangle,{ type:"left", columns:5}];
+let shape4 =[createTriangle,{ type:"left", columns:5}];
 let second_input = { action:"flip", type1:shape3, type2: shape4 }
 let _flip_5_left_triangle = [];
 _flip_5_left_triangle[0] = "    *     *";
@@ -263,8 +263,8 @@ _flip_5_left_triangle[4] = "***** *****";
 assert.deepEqual(generatePattern(second_input), _flip_5_left_triangle);
 console.log("2nd generatePattern test passed");
 
-let shape5 =[createTriangle,"right", 5];
-let shape6 =[createTriangle, "left", 5];
+let shape5 =[createTriangle,{ type:"right", columns:5 }];
+let shape6 =[createTriangle,{ type:"left", columns:5 }];
 let third_input = { action:"mirror", type1:shape5, type2: shape6 }
 let _mirror_5_left_right = [];
 _mirror_5_left_right[0] = "***** *****";
@@ -280,16 +280,16 @@ console.log("all generatePattern test passed");
 //=================================(extract multi user Args test)=========================\\
 
 let inputFor_filp = [,,"flip","filled_rectangle",5,5,"left_triangle",5];
-let type1 = [ createRectangle, "filled",5,5 ];
-let type2 = [ createTriangle, "left", 5 ];
+let type1 = [ createRectangle, { type:"filled",columns:5,rows:5} ];
+let type2 = [ createTriangle, { type:"left", columns:5, rows:0} ];
 let outputFor_flip = { action:"flip", type1: type1, type2: type2 };
 
 assert.deepEqual(extractMultiUsrArgs(inputFor_filp),outputFor_flip);
 console.log("input for flip filled_rectangle 5 5 and left_triangle 5 passed");
 
 let inputFor_mirror = [ ,,"mirror","left_triangle",5,"left_triangle",5 ];
-let type3 = [ createTriangle, "left", 5 ];
-let type4 = [ createTriangle, "left", 5 ];
+let type3 = [ createTriangle,{ type:"left", columns:5, rows:0} ];
+let type4 = [ createTriangle,{ type: "left", columns:5, rows:0} ];
 let outputFor_mirror = { action:"mirror", type1: type3, type2: type4 };
 
 assert.deepEqual(extractMultiUsrArgs(inputFor_mirror),outputFor_mirror);
